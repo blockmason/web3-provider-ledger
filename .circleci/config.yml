@@ -1,0 +1,60 @@
+defaults: &defaults
+  working_directory: ~
+  docker:
+  - image: twuni/javascript:1.0.7
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - v1-{{ checksum ".nvmrc" }}-yarn-lock-{{ checksum "yarn.lock" }}
+    - run:
+        name: Installing dependencies
+        command: |
+          yarn install --frozen-lockfile
+    - save_cache:
+        key: v1-{{ checksum ".nvmrc" }}-yarn-lock-{{ checksum "yarn.lock" }}
+        paths:
+        - node_modules
+    - run:
+        name: Building assets for production
+        command: |
+          NODE_ENV=production yarn build
+    - store_artifacts:
+        path: lib
+    - run:
+        name: Checking code style
+        command: |
+          mkdir -vp reports
+          yarn lint --format junit --output-file reports/eslint.xml
+    - store_test_results:
+        path: reports
+    - store_artifacts:
+        path: reports
+    - run:
+        name: Testing
+        command: |
+          mkdir -vp reports/junit
+          yarn --silent test --reporter xunit > reports/junit/test-results.xml
+    - store_test_results:
+        path: reports/junit
+    - store_artifacts:
+        path: reports/junit
+    - run:
+        name: Generate documentation
+        command: |
+          yarn documentation
+    - store_artifacts:
+        path: docs
+    - run:
+        name: Scanning dependencies for vulnerabilities
+        command: |
+          if [ -n "${SNYK_TOKEN}" ]; then
+            yarn security
+          else
+            echo 'Missing authorization for snyk.io; skipping vulnerability scan'
+          fi

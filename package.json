@@ -1,0 +1,35 @@
+{
+  "name": "web3-provider-ledger",
+  "version": "1.0.0",
+  "description": "A web3 provider for signing transactions with Ledger hardware wallet.",
+  "main": "lib/index.js",
+  "repository": "https://github.com/blockmason/web3-provider-ledger",
+  "author": "Devin Canterberry <devin@canterberry.cc>",
+  "license": "MIT",
+  "scripts": {
+    "build": "scripts/build.sh",
+    "documentation": "scripts/documentation.sh",
+    "lint": "scripts/lint.sh",
+    "security": "scripts/security.sh",
+    "test": "scripts/test.sh"
+  },
+  "dependencies": {
+    "buffer": "5.0.8",
+    "rlp": "2.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.1.2",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-stage-2": "6.24.1",
+    "chai": "4.1.2",
+    "eslint": "4.14.0",
+    "eslint-plugin-ante": "1.0.0",
+    "jsdoc": "3.5.5",
+    "mocha": "4.1.0",
+    "sinon": "4.1.3",
+    "sinon-chai": "2.14.0",
+    "snyk": "1.63.0"
+  }
+}
