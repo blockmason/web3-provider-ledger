@@ -56,3 +56,9 @@ const ethNet = new Eth(web3.currentProvider);
 // Use the network-capable provider to *send* the transaction
 const txId = await ethNet.sendRawTransaction(tx);
 ```
+
+## License
+
+This library is licensed under the [MIT][LICENSE] license.
+
+[LICENSE]: https://github.com/blockmason/web3-provider-ledger/blob/master/LICENSE
