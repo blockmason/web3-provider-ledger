@@ -1,14 +1,8 @@
-/* global origin, u2f */
-
-import LedgerDevice from '../device';
-
 import encodeTransaction from './encode-transaction';
 
 class LedgerEthereumRPC {
-  constructor() {
-    this.attributes = {
-      device: new LedgerDevice({ appId: origin, u2f })
-    };
+  constructor(device) {
+    this.attributes = Object.freeze({ device });
   }
 
   accounts = async () => {

@@ -43,22 +43,20 @@ const assertStatus = (signature) => {
  */
 class LedgerDevice {
   /**
-   * @private
-   *
    * The key used to XOR scramble APDUs for transmission to the device.
    *
    * @type {number[]}
+   * @private
    */
   static get apduKey() {
     return [0x77, 0x30, 0x77];
   }
 
   /**
-   * @private
-   *
    * The challenge to send to the device when signing transactions.
    *
    * @type {string}
+   * @private
    */
   static get challenge() {
     return 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
@@ -101,24 +99,22 @@ class LedgerDevice {
   }
 
   /**
-   * @private
-   *
    * The default amount of time, in seconds, to wait for the U2F device to
    * respond.
    *
    * @type {number}
+   * @private
    */
   static get defaultTimeout() {
     return 30;
   }
 
   /**
-   * @private
-   *
    * The version of the U2F protocol to use when transmitting messages to the
    * device.
    *
    * @type {string}
+   * @private
    */
   static get u2fVersion() {
     return 'U2F_V2';
@@ -176,8 +172,6 @@ class LedgerDevice {
   };
 
   /**
-   * @private
-   *
    * Sends raw APDUs to the Ledger device, in sequence, and returns the
    * resulting buffer. If no APDUs are given, returns `undefined`.
    *
@@ -188,6 +182,8 @@ class LedgerDevice {
    * @throws {Error} Throws an error if something goes wrong while communicating
    * with the U2F device, or if the signatureData of any APDU ends with a byte
    * sequence other than 0x9000.
+   *
+   * @private
    */
   send = async (apdus = []) => {
     const {
