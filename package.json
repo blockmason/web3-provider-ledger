@@ -2,7 +2,6 @@
   "name": "web3-provider-ledger",
   "version": "1.0.2",
   "description": "A web3 provider for signing transactions with Ledger hardware wallet.",
-  "main": "lib/index.js",
   "repository": "https://github.com/blockmason/web3-provider-ledger",
   "author": "Devin Canterberry <devin@canterberry.cc>",
   "license": "MIT",
