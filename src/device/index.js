@@ -144,6 +144,7 @@ class LedgerDevice {
    * @param {number} [index=0] - The index of the address to return
    *
    * @returns {string} Returns a hex string that can be used to identify the account on the Ethereum network.
+   * @function
    */
   getAddress = async (index = 0) => {
     const { attributes: { path } } = this;
@@ -162,6 +163,7 @@ class LedgerDevice {
    * @param {number} [count=5] - The number of addresses to return
    *
    * @returns {string[]} Returns an array of hex strings that can be used to identify accounts on the Ethereum network.
+   * @function
    */
   listAddresses = (offset = 0, count = 5) => {
     const addresses = [];
@@ -184,6 +186,7 @@ class LedgerDevice {
    * sequence other than 0x9000.
    *
    * @private
+   * @function
    */
   send = async (apdus = []) => {
     const {
@@ -229,6 +232,7 @@ class LedgerDevice {
    * @param {Buffer} inputBuffer - The input buffer to be signed.
    *
    * @returns {string} Returns a hex string that can be used as the `sig` attribute on an Ethereum transaction.
+   * @function
    */
   sign = async (inputBuffer) => {
     const { attributes: { path } } = this;

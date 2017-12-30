@@ -37,6 +37,7 @@ class LedgerProvider {
    *
    * @returns {void}
    * @async
+   * @function
    */
   sendAsync = async (payload, callback) => {
     const { attributes: { eth } } = this;
@@ -65,7 +66,7 @@ class LedgerProvider {
 }
 
 /**
- * @callback {LedgerProvider~rpcCallback}
+ * @callback LedgerProvider~rpcCallback
  *
  * A callback to be triggered when a JSON RPC 2.0 request has been completed.
  *
