@@ -11,7 +11,7 @@ BABEL=${BASE_DIR}/node_modules/.bin/babel
 
 (
   cd "${BASE_DIR}"
-  rm -vfR lib
+  rm -fR lib
   "${BABEL}" \
     --ignore 'spec.*.js,spec.js' \
     --out-dir lib \
