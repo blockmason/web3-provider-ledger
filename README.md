@@ -1,16 +1,21 @@
 # Ledger `web3` Provider
 
-This web3 provider allows Ethereum transactions to be signed with a Ledger device.
+This web3 provider allows Ethereum transactions to be signed with a [Ledger][4] device.
+
+## Features
+
+ * Lightweight, with minimal dependencies
+ * Easy to use; just plug it in wherever a web3 provider is expected
 
 ## Installing
 
-**Yarn:**
+**[Yarn][5]:**
 
 ```
 $ yarn add web3-provider-ledger
 ```
 
-**npm:**
+**[npm][6]:**
 
 ```
 $ npm install --save web3-provider-ledger
@@ -18,7 +23,7 @@ $ npm install --save web3-provider-ledger
 
 ## Usage
 
-Let's assume we are using the `ethjs` library. This library, like Web3,
+Let's assume we are using the [`ethjs`][7] library. This library, like Web3,
 is designed to be constructed with an instance of a web3 provider.
 
 ```javascript
@@ -57,8 +62,27 @@ const ethNet = new Eth(web3.currentProvider);
 const txId = await ethNet.sendRawTransaction(tx);
 ```
 
+## Contributing
+
+See [CONTRIBUTING.md][2].
+
+## Code of Conduct
+
+See [CODE_OF_CONDUCT.md][1].
+
+## Security
+
+See [SECURITY.md][8].
+
 ## License
 
-This library is licensed under the [MIT][LICENSE] license.
+This library is licensed under the [MIT][3] license.
 
-[LICENSE]: https://github.com/blockmason/web3-provider-ledger/blob/master/LICENSE
+[1]: https://github.com/blockmason/web3-provider-ledger/blob/master/CODE_OF_CONDUCT.md
+[2]: https://github.com/blockmason/web3-provider-ledger/blob/master/CONTRIBUTING.md
+[3]: https://github.com/blockmason/web3-provider-ledger/blob/master/LICENSE
+[4]: https://www.ledgerwallet.com/
+[5]: https://npmjs.com/
+[6]: https://yarnpkg.com/
+[7]: https://github.com/ethjs/ethjs
+[8]: https://github.com/blockmason/web3-provider-ledger/blob/master/SECURITY.md
