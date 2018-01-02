@@ -1,7 +1,7 @@
 /* eslint no-magic-numbers: ['off'] */
 /* eslint sort-keys: ['off'] */
 
-import { expect, story, stub } from './spec.helpers';
+import { context, describe, expect, it, stub } from './spec.helpers';
 
 import { Buffer } from 'buffer';
 import LedgerProvider from '.';
@@ -23,85 +23,127 @@ const u2f = {
   })
 };
 
-const ledgerProvider = new LedgerProvider({ appId: origin, u2f });
+describe('LedgerProvider', () => {
+  const ledgerProvider = new LedgerProvider({ appId: origin, u2f });
 
-const callback = stub();
+  describe('#sendAsync()', () => {
+    const sendAsync = (payload, callback) => ledgerProvider.sendAsync(payload, callback);
 
-story('LedgerProvider#sendAsync() with a payload for an unsupported JSON RPC version should trigger the callback with an error', {
-  given: () => [{ jsonrpc: '1.0' }, callback],
-  when: (payload, callback) => ledgerProvider.sendAsync(payload, callback),
-  then: async (returnValue) => {
-    await returnValue;
-    expect(callback.firstCall.args[0]).to.be.an('error');
-  }
-});
+    context('with a payload for an unsupported JSON RPC version', () => {
+      const payload = { jsonrpc: '1.0' };
 
-story('LedgerProvider#sendAsync() with a payload for the "eth_accounts" method should trigger the callback with a result of type array', {
-  given: () => {
-    callback.reset();
-    return [
-      {
+      it('should trigger the callback only once', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback).to.have.been.calledOnce;
+      });
+
+      it('should trigger the callback with an error', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[0]).to.be.an('error');
+      });
+    });
+
+    context('with a payload for the "eth_accounts" method', () => {
+      const payload = {
         id: 'abc123',
         jsonrpc: '2.0',
         method: 'eth_accounts',
-        params: [
-          {}
-        ]
-      },
-      callback
-    ];
-  },
-  when: (payload, callback) => ledgerProvider.sendAsync(payload, callback),
-  then: async (returnValue) => {
-    await returnValue;
-    expect(callback.firstCall.args[0]).to.be.undefined;
-    expect(callback.firstCall.args[1]).to.have.property('id', 'abc123');
-    expect(callback.firstCall.args[1]).to.have.property('jsonrpc', '2.0');
-    expect(callback.firstCall.args[1].result).to.be.an('array');
-  }
-});
+        params: []
+      };
 
-story('LedgerProvider#sendAsync() with a payload for the "eth_sendTransaction" method should trigger the callback with a result of type string', {
-  given: () => {
-    callback.reset();
-    return [
-      {
+      it('should trigger the callback only once', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback).to.have.been.calledOnce;
+      });
+
+      it('should trigger the callback without an error', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[0]).to.be.undefined;
+      });
+
+      it('should trigger the callback with a result of type array', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[1].result).to.be.an('array');
+      });
+
+      it('should trigger the callback with a JSON RPC version of 2.0', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[1]).to.have.property('jsonrpc', '2.0');
+      });
+
+      it('should trigger the callback with an id mirroring the payload id', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[1]).to.have.property('id', payload.id);
+      });
+    });
+
+    context('with a payload for the "eth_sendTransaction" method', () => {
+      const payload = {
         id: 'abc123',
         jsonrpc: '2.0',
         method: 'eth_sendTransaction',
         params: [
           {}
         ]
-      },
-      callback
-    ];
-  },
-  when: (payload, callback) => ledgerProvider.sendAsync(payload, callback),
-  then: async (returnValue) => {
-    await returnValue;
-    expect(callback.firstCall.args[0]).to.be.undefined;
-    expect(callback.firstCall.args[1]).to.have.property('id', 'abc123');
-    expect(callback.firstCall.args[1]).to.have.property('jsonrpc', '2.0');
-    expect(callback.firstCall.args[1].result).to.be.a('string');
-  }
-});
+      };
 
-story('LedgerProvider#sendAsync() with a payload for an unsupported JSON RPC method should trigger the callback with an error', {
-  given: () => {
-    callback.reset();
-    return [
-      {
+      it('should trigger the callback only once', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback).to.have.been.calledOnce;
+      });
+
+      it('should trigger the callback without an error', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[0]).to.be.undefined;
+      });
+
+      it('should trigger the callback with a JSON RPC version of 2.0', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[1]).to.have.property('jsonrpc', '2.0');
+      });
+
+      it('should trigger the callback with an id mirroring the payload id', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[1]).to.have.property('id', payload.id);
+      });
+
+      it('should trigger the callback with a result of type string', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[1].result).to.be.a('string');
+      });
+    });
+
+    context('with a payload for an unsupported JSON RPC method', () => {
+      const payload = {
         id: 'abc123',
         jsonrpc: '2.0',
         method: 'eth_hello',
         params: []
-      },
-      callback
-    ];
-  },
-  when: (payload, callback) => ledgerProvider.sendAsync(payload, callback),
-  then: async (returnValue) => {
-    await returnValue;
-    expect(callback.firstCall.args[0]).to.be.an('error');
-  }
+      };
+
+      it('should trigger the callback only once', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback).to.have.been.calledOnce;
+      });
+
+      it('should trigger the callback with an error', async () => {
+        const callback = stub();
+        await sendAsync(payload, callback);
+        expect(callback.firstCall.args[0]).to.be.an('error');
+      });
+    });
+  });
 });

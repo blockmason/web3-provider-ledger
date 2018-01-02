@@ -125,7 +125,7 @@ class LedgerDevice {
    *
    * @param {Object} attributes - Named attributes
    * @param {string} attributes.appId - The appId to send to the device. Within a web browser, this must be equal to the page's origin
-   * @param {string} [attributes.path] - The path of the virtual wallet to use on the device
+   * @param {number[]} [attributes.path] - The path of the virtual wallet to use on the device
    * @param {number} [attributes.timeout] - The amount of time, in seconds, to wait for the device to respond to requests
    * @param {U2F} attributes.u2f - The implementation of the U2F API to use
    */

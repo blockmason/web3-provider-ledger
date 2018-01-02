@@ -14,12 +14,14 @@ class LedgerProvider {
    *
    * @param {Object} attributes - Named attributes
    * @param {string} [attributes.appId=origin] - The appId to provide to the U2F device. In web browsers, the default should suffice.
+   * @param {number[]} [attributes.path] - The path of the virtual wallet to use on the device. Defaults to the path of the first account on the Ledger Nano S.
    * @param {U2F} [attributes.u2f=u2f] - The U2F API implementation to use for communicating with the U2F device. In web browsers, on pages served via HTTPS, the default should suffice.
    */
   constructor(attributes = {}) {
     this.attributes = Object.freeze({
       eth: new RPC(new Device({
         appId: attributes.appId || origin,
+        path: attributes.path,
         u2f: attributes.u2f || u2f
       }))
     });
