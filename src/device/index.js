@@ -37,6 +37,11 @@ const assertStatus = (signature) => {
   }
 };
 
+const getAccountPath = (path, index) => [
+  ...path.slice(0, path.length - 1),
+  path[path.length - 1] + index
+];
+
 /**
  * An all-inclusive API for accessing a Ledger hardware wallet for the purposes
  * of signing Ethereum transactions.
@@ -124,13 +129,15 @@ class LedgerDevice {
    * Initializes a new Ledger hardware wallet with the given path.
    *
    * @param {Object} attributes - Named attributes
+   * @param {number} [accountIndex=0] - The index of the account to use within the device
    * @param {string} attributes.appId - The appId to send to the device. Within a web browser, this must be equal to the page's origin
    * @param {number[]} [attributes.path] - The path of the virtual wallet to use on the device
    * @param {number} [attributes.timeout] - The amount of time, in seconds, to wait for the device to respond to requests
    * @param {U2F} attributes.u2f - The implementation of the U2F API to use
    */
-  constructor({ appId, path, timeout, u2f }) {
+  constructor({ accountIndex, appId, path, timeout, u2f }) {
     this.attributes = {
+      accountIndex: accountIndex || 0,
       appId,
       path: path || this.constructor.defaultPath,
       timeout: timeout || this.constructor.defaultTimeout,
@@ -148,10 +155,7 @@ class LedgerDevice {
    */
   getAddress = async (index = 0) => {
     const { attributes: { path } } = this;
-    const request = createGetAddressRequest([
-      ...path.slice(0, path.length - 1),
-      path[path.length - 1] + index
-    ]);
+    const request = createGetAddressRequest(getAccountPath(path, index));
     const response = parseGetAddressResponse(await this.send(request));
     return response.address;
   };
@@ -235,8 +239,8 @@ class LedgerDevice {
    * @function
    */
   sign = async (inputBuffer) => {
-    const { attributes: { path } } = this;
-    const request = createSignRequest(path, inputBuffer);
+    const { attributes: { accountIndex, path } } = this;
+    const request = createSignRequest(getAccountPath(path, accountIndex), inputBuffer);
     const response = parseSignResponse(await this.send(request));
     return response;
   };
