@@ -1,6 +1,6 @@
 /* global origin, u2f */
 
-import Device from './device';
+import LedgerDevice from './device';
 import RPC from './rpc';
 
 const JSONRPC_VERSION = '2.0';
@@ -12,18 +12,24 @@ class LedgerProvider {
   /**
    * Create a new web3 provider for signing transactions with a Ledger hardware wallet.
    *
-   * @param {Object} attributes - Named attributes
-   * @param {string} [attributes.appId=origin] - The appId to provide to the U2F device. In web browsers, the default should suffice.
-   * @param {number[]} [attributes.path] - The path of the virtual wallet to use on the device. Defaults to the path of the first account on the Ledger Nano S.
-   * @param {U2F} [attributes.u2f=u2f] - The U2F API implementation to use for communicating with the U2F device. In web browsers, on pages served via HTTPS, the default should suffice.
+   * @param {Object} [attributes] - Named attributes
+   * @param {number} [attributes.accountIndex=0] - If `device` is not provided, this specifies the index of the account within the device to use
+   * @param {string} [attributes.appId=origin] - If `device` is not provided, this specifies the appId to provide to the U2F device. In web browsers, the default should suffice.
+   * @param {number[]} [attributes.path] - If `device` is not provided, this specifies the path of the virtual wallet to use on the device. Defaults to the path of the first account on the Ledger Nano S.
+   * @param {U2F} [attributes.u2f=u2f] - If `device` is not provided, this specifies the U2F API implementation to use for communicating with the U2F device. In web browsers, on pages served via HTTPS, the default should suffice.
+   * @param {LedgerDevice} [attributes.device] - The Ledger device to use. Defaults to a Ledger Nano S device using the default account, using a U2F API provided by a `u2f` global, and using an appId of the `origin` global.
    */
   constructor(attributes = {}) {
+    const device = attributes.device || new LedgerDevice({
+      accountIndex: attributes.accountIndex,
+      appId: attributes.appId || origin,
+      path: attributes.path,
+      u2f: attributes.u2f || u2f
+    });
+
     this.attributes = Object.freeze({
-      eth: new RPC(new Device({
-        appId: attributes.appId || origin,
-        path: attributes.path,
-        u2f: attributes.u2f || u2f
-      }))
+      device,
+      eth: new RPC(device)
     });
   }
 
