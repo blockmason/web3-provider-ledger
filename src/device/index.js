@@ -129,7 +129,7 @@ class LedgerDevice {
    * Initializes a new Ledger hardware wallet with the given path.
    *
    * @param {Object} attributes - Named attributes
-   * @param {number} [accountIndex=0] - The index of the account to use within the device
+   * @param {number} [attributes.accountIndex=0] - The index of the account to use within the device
    * @param {string} attributes.appId - The appId to send to the device. Within a web browser, this must be equal to the page's origin
    * @param {number[]} [attributes.path] - The path of the virtual wallet to use on the device
    * @param {number} [attributes.timeout] - The amount of time, in seconds, to wait for the device to respond to requests
