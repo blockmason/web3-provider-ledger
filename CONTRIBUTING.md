@@ -55,7 +55,7 @@ excellent way to learn the codebase and design patterns within it.
 
 ### Want to write some documentation?
 
-Great! 
+Great!
 
 ## Code of Conduct
 
@@ -72,7 +72,7 @@ commits are preserved and associated with your GitHub account.
 [Blockmason][4] owns and maintains this project, with the help of a
 community of open-source contributors.
 
-[1]: https://blockmason.automatic.build/docs/web3-provider-ledger/1.0.2
+[1]: https://blockmason.automatic.build/docs/web3-provider-ledger/1.0.4
 [2]: https://github.com/blockmason/web3-provider-ledger/blob/master/CODE_OF_CONDUCT.md
 [3]: https://t.me/web3_provider_ledger
 [4]: https://blockmason.io/

@@ -62,6 +62,45 @@ const ethNet = new Eth(web3.currentProvider);
 const txId = await ethNet.sendRawTransaction(tx);
 ```
 
+### Advanced Usage
+
+See the [API Reference][9] for detailed code-level documentation.
+
+In addition to the provider, this library includes a `LedgerDevice`,
+which allows operations to be performed directly on the device. This
+can be useful for *account discovery* (`LedgerDevice#listAddresses()`),
+which can be used to allow users to choose which account they would like
+to use. The index of the preferred account can then be provided to a new
+device via the `accountIndex` attribute, and this device can be given to
+`LedgerProvider` via its `device` attribute.
+
+For example, here is how you might get a list of account addresses on
+the device:
+
+```javascript
+import LedgerDevice from 'web3-provider-ledger/device';
+
+const device = new LedgerDevice();
+const accounts = await device.listAddresses();
+```
+
+Let's say the user has selected the account at index `3`. To use that account,
+you would then construct the provider as follows:
+
+```javascript
+import Eth from 'ethjs';
+import LedgerDevice from 'web3-provider-ledger/device';
+import LedgerProvider from 'web3-provider-ledger';
+
+// Simple form
+const eth = new Eth(new LedgerProvider({ accountIndex: 3 }));
+
+// Advanced form (equivalent result to the simple form above)
+const eth = new Eth(new LedgerProvider({
+  device: new LedgerDevice({ accountIndex: 3 })
+}));
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md][2].
@@ -86,3 +125,4 @@ This library is licensed under the [MIT][3] license.
 [6]: https://yarnpkg.com/
 [7]: https://github.com/ethjs/ethjs
 [8]: https://github.com/blockmason/web3-provider-ledger/blob/master/SECURITY.md
+[9]: https://blockmason.automatic.build/docs/web3-provider-ledger/1.0.4
