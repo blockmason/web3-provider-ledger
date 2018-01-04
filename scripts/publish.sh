@@ -37,5 +37,5 @@ YARN=$(which yarn)
   cp -fR package.json yarn.lock README.md dist/
 
   info '🚢' 'Publish package…'
-  (cd dist; "${YARN}" --silent publish . --no-git-tag-version --new-version "$(awk '/"version": ".+"/ { print $2; }' < package.json | sed -E 's|^"(.+)".*$|\1|g')"
+  (cd dist; "${YARN}" --silent publish . --no-git-tag-version --new-version "$(awk '/"version": ".+"/ { print $2; }' < package.json | sed -E 's|^"(.+)".*$|\1|g')")
 )
