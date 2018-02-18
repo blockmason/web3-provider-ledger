@@ -1,5 +1,12 @@
 # Ledger `web3` Provider
 
+[![CircleCI](https://circleci.com/gh/blockmason/web3-provider-ledger.svg?style=svg)](https://circleci.com/gh/blockmason/web3-provider-ledger)
+[![npm version](https://img.shields.io/npm/v/web3-provider-ledger.svg)](https://www.npmjs.com/package/web3-provider-ledger)
+[![npm downloads](https://img.shields.io/npm/dt/web3-provider-ledger.svg)](https://www.npmjs.com/package/web3-provider-ledger)
+[![dependencies](https://img.shields.io/david/blockmason/web3-provider-ledger.svg)](https://github.com/blockmason/web3-provider-ledger/blob/master/package.json)
+[![devDependencies](https://img.shields.io/david/dev/blockmason/web3-provider-ledger.svg)](https://github.com/blockmason/web3-provider-ledger/blob/master/package.json)
+[![license](https://img.shields.io/github/license/blockmason/web3-provider-ledger.svg)](https://github.com/blockmason/web3-provider-ledger/blob/master/LICENSE)
+
 This web3 provider allows Ethereum transactions to be signed with a [Ledger][4] device.
 
 ## Features
