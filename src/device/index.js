@@ -6,6 +6,7 @@ import createGetAddressRequest from './get-address/request';
 import createSignRequest from './sign/request';
 import parseGetAddressResponse from './get-address/response';
 import parseSignResponse from './sign/response';
+import requireParameters from '../helpers/require-parameters';
 
 const U2FSignError = [
   () => new Error('OK: The operation completed successfully.'),
@@ -154,14 +155,7 @@ class LedgerDevice {
    * @param {U2F} attributes.u2f - The implementation of the U2F API to use
    */
   constructor({ accountIndex, appId, path, timeout, u2f }) {
-    const missingParameters = [
-      !appId && 'appId',
-      !u2f && 'u2f'
-    ].filter(Boolean);
-
-    if (missingParameters.length > 0) {
-      throw new Error(`ArgumentError: Missing required parameter(s): ${missingParameters.join(', ')}`);
-    }
+    requireParameters('appId', 'u2f')({ appId, u2f });
 
     this.attributes = {
       accountIndex: accountIndex || 0,

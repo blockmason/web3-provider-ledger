@@ -3,6 +3,8 @@
 import LedgerDevice from './device';
 import RPC from './rpc';
 
+import requireParameters from './helpers/require-parameters';
+
 const JSONRPC_VERSION = '2.0';
 
 /**
@@ -21,13 +23,7 @@ class LedgerProvider {
    */
   constructor(attributes = {}) {
     if (!attributes.device) {
-      if (!attributes.u2f && typeof(u2f) === 'undefined') {
-        throw new Error('ArgumentError: No device or `u2f` implementation given, and the U2F API is not provided in this context. Please provide a device or a `u2f` implementation.');
-      }
-
-      if (!attributes.appId && typeof(origin) === 'undefined') {
-        throw new Error('ArgumentError: No device or `appId` given, and the application ID cannot be derived from the origin in this context. Please provide a device or an `appId`.')
-      }
+      requireParameters('appId', 'u2f')(attributes);
     }
 
     const device = attributes.device || new LedgerDevice({
