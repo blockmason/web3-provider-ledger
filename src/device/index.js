@@ -226,8 +226,8 @@ class LedgerDevice {
       return current;
     }, false));
 
+    // eslint-disable-next-line no-await-in-loop
     for (let keyHandle = keyHandles.shift(); keyHandle; keyHandle = keyHandles.shift()) {
-      // eslint-disable-next-line no-await-in-loop
       const signature = await new Promise((resolve, reject) => {
         u2f.sign(appId, challenge, [{
           keyHandle: Base64.toBase64URLSafe(keyHandle),
