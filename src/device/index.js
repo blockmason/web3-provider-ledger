@@ -104,6 +104,24 @@ class LedgerDevice {
   }
 
   /**
+   * The address of the Testnet Ethereum wallet in the Ledger Nano S.
+   *
+   * @type {number[]}
+   */
+  static get testPath() {
+    return [
+      // BIP44/EIP84 Purpose
+      ...[0x80, 0x00, 0x00, 0x2c],
+      // BIP44/EIP84 Coin Type
+      ...[0x80, 0x00, 0x00, 0x01],
+      // BIP44/EIP84 Account
+      ...[0x80, 0x00, 0x00, 0x00],
+      // Derivation Path Index
+      ...[0x00, 0x00, 0x00, 0x00]
+    ];
+  }
+
+  /**
    * The default amount of time, in seconds, to wait for the U2F device to
    * respond.
    *
