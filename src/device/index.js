@@ -103,7 +103,7 @@ class LedgerDevice {
     ];
   }
 
-    /**
+  /**
    * The address of the Testnet Ethereum wallet in the Ledger Nano S.
    *
    * @type {number[]}
