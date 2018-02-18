@@ -132,7 +132,7 @@ This library is licensed under the [MIT][3] license.
 [6]: https://yarnpkg.com/
 [7]: https://github.com/ethjs/ethjs
 [8]: https://github.com/blockmason/web3-provider-ledger/blob/master/SECURITY.md
-[9]: https://blockmason.automatic.build/docs/web3-provider-ledger/1.0.4
+[9]: https://13-115747070-gh.circle-artifacts.com/0/home/project/project/docs/web3-provider-ledger/1.0.6/index.html
 [10]: https://github.com/blockmason/web3-provider-ledger/blob/master/package.json
 [11]: https://www.npmjs.com/package/web3-provider-ledger
 [12]: https://circleci.com/gh/blockmason/web3-provider-ledger

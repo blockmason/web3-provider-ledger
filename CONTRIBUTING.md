@@ -72,7 +72,7 @@ commits are preserved and associated with your GitHub account.
 [Blockmason][4] owns and maintains this project, with the help of a
 community of open-source contributors.
 
-[1]: https://blockmason.automatic.build/docs/web3-provider-ledger/1.0.4
+[1]: https://13-115747070-gh.circle-artifacts.com/0/home/project/project/docs/web3-provider-ledger/1.0.6/index.html
 [2]: https://github.com/blockmason/web3-provider-ledger/blob/master/CODE_OF_CONDUCT.md
 [3]: https://t.me/web3_provider_ledger
 [4]: https://blockmason.io/
