@@ -3,6 +3,8 @@
 import LedgerDevice from './device';
 import RPC from './rpc';
 
+import requireParameters from './helpers/require-parameters';
+
 const JSONRPC_VERSION = '2.0';
 
 /**
@@ -20,6 +22,10 @@ class LedgerProvider {
    * @param {LedgerDevice} [attributes.device] - The Ledger device to use. Defaults to a Ledger Nano S device using the default account, using a U2F API provided by a `u2f` global, and using an appId of the `origin` global.
    */
   constructor(attributes = {}) {
+    if (!attributes.device) {
+      requireParameters('appId', 'u2f')(attributes);
+    }
+
     const device = attributes.device || new LedgerDevice({
       accountIndex: attributes.accountIndex,
       appId: attributes.appId || origin,
