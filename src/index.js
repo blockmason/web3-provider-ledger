@@ -20,6 +20,16 @@ class LedgerProvider {
    * @param {LedgerDevice} [attributes.device] - The Ledger device to use. Defaults to a Ledger Nano S device using the default account, using a U2F API provided by a `u2f` global, and using an appId of the `origin` global.
    */
   constructor(attributes = {}) {
+    if (!attributes.device) {
+      if (!attributes.u2f && typeof(u2f) === 'undefined') {
+        throw new Error('ArgumentError: No device or `u2f` implementation given, and the U2F API is not provided in this context. Please provide a device or a `u2f` implementation.');
+      }
+
+      if (!attributes.appId && typeof(origin) === 'undefined') {
+        throw new Error('ArgumentError: No device or `appId` given, and the application ID cannot be derived from the origin in this context. Please provide a device or an `appId`.')
+      }
+    }
+
     const device = attributes.device || new LedgerDevice({
       accountIndex: attributes.accountIndex,
       appId: attributes.appId || origin,

@@ -1,10 +1,26 @@
 /* eslint no-magic-numbers: ['off'] */
 /* eslint sort-keys: ['off'] */
 
-import { expect, story, stub } from '../spec.helpers';
+import { context, describe, expect, it, story, stub } from '../spec.helpers';
 
 import { Buffer } from 'buffer';
 import LedgerDevice from '.';
+
+describe('LedgerDevice', () => {
+  describe('#constructor()', () => {
+    context('when appId is missing', () => {
+      it('should throw an error', () => {
+        expect(() => new LedgerDevice({ u2f: {} })).to.throw(Error, /ArgumentError/g);
+      });
+    });
+
+    context('when u2f is missing', () => {
+      it('should throw an error', () => {
+        expect(() => new LedgerDevice({ appId: 'APP_ID' })).to.throw(Error, /ArgumentError/g);
+      });
+    });
+  });
+});
 
 story('LedgerDevice#sign()', {
   given: () => [

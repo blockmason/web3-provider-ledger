@@ -154,6 +154,15 @@ class LedgerDevice {
    * @param {U2F} attributes.u2f - The implementation of the U2F API to use
    */
   constructor({ accountIndex, appId, path, timeout, u2f }) {
+    const missingParameters = [
+      !appId && 'appId',
+      !u2f && 'u2f'
+    ].filter(Boolean);
+
+    if (missingParameters.length > 0) {
+      throw new Error(`ArgumentError: Missing required parameter(s): ${missingParameters.join(', ')}`);
+    }
+
     this.attributes = {
       accountIndex: accountIndex || 0,
       appId,
