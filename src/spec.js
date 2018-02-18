@@ -25,6 +25,22 @@ const u2f = {
 };
 
 describe('LedgerProvider', () => {
+  describe('#constructor()', () => {
+    context('without a device', () => {
+      context('with no U2F implementation', () => {
+        it('should throw an error', () => {
+          expect(() => new LedgerProvider({ appId: origin })).to.throw(Error, /ArgumentError/g);
+        });
+      });
+
+      context('with no appId', () => {
+        it('should throw an error', () => {
+          expect(() => new LedgerProvider({ u2f })).to.throw(Error, /ArgumentError/g);
+        });
+      });
+    });
+  });
+
   const ledgerProvider = new LedgerProvider({
     device: new LedgerDevice({ appId: origin, u2f })
   });

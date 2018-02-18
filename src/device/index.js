@@ -6,6 +6,7 @@ import createGetAddressRequest from './get-address/request';
 import createSignRequest from './sign/request';
 import parseGetAddressResponse from './get-address/response';
 import parseSignResponse from './sign/response';
+import requireParameters from '../helpers/require-parameters';
 
 const U2FSignError = [
   () => new Error('OK: The operation completed successfully.'),
@@ -154,6 +155,8 @@ class LedgerDevice {
    * @param {U2F} attributes.u2f - The implementation of the U2F API to use
    */
   constructor({ accountIndex, appId, path, timeout, u2f }) {
+    requireParameters('appId', 'u2f')({ appId, u2f });
+
     this.attributes = {
       accountIndex: accountIndex || 0,
       appId,
