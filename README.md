@@ -69,6 +69,32 @@ const ethNet = new Eth(web3.currentProvider);
 const txId = await ethNet.sendRawTransaction(tx);
 ```
 
+### Usage with `ethjs-signer-provider`
+
+```javascript
+import Eth from 'ethjs';
+import LedgerDevice from 'web3-provider-ledger/ledger-device';
+import SignerProvider from 'ethjs-provider-signer';
+
+const ledgerDevice = new LedgerDevice({ appId: origin, u2f });
+
+const provider = new SignerProvider('https://ropsten.infura.io', {
+  signTransaction: async (transaction, callback) => {
+    const signedTransaction = await ledgerDevice.signTransaction(transaction);
+    callback(null, signedTransaction);
+  },
+  accounts: async (callback) => {
+    const accounts = await ledgerDevice.listAddresses();
+    callback(null, accounts);
+  }
+});
+
+const eth = new Eth(provider);
+
+// `eth` is now configured to use the Ledger device for signing and
+// Infura for sending transactions to the Ethereum network
+```
+
 ### Advanced Usage
 
 See the [API Reference][9] for detailed code-level documentation.
@@ -87,7 +113,7 @@ the device:
 ```javascript
 import LedgerDevice from 'web3-provider-ledger/device';
 
-const device = new LedgerDevice();
+const device = new LedgerDevice({ appId: origin, u2f });
 const accounts = await device.listAddresses();
 ```
 
@@ -104,7 +130,7 @@ const eth = new Eth(new LedgerProvider({ accountIndex: 3 }));
 
 // Advanced form (equivalent result to the simple form above)
 const eth = new Eth(new LedgerProvider({
-  device: new LedgerDevice({ accountIndex: 3 })
+  device: new LedgerDevice({ accountIndex: 3, appId: origin, u2f })
 }));
 ```
 

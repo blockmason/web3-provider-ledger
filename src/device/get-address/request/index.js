@@ -3,7 +3,7 @@
 import { Buffer } from 'buffer';
 
 const createGetAddressRequest = (path) => {
-  const apdu = new Buffer(6 + path.length);
+  const apdu = Buffer.alloc(6 + path.length);
 
   // Command: getAddress() (0xe002)
   apdu[0] = 0xe0;
@@ -16,7 +16,7 @@ const createGetAddressRequest = (path) => {
   // Path
   apdu[4] = 1 + path.length;
   apdu[5] = path.length / 4;
-  new Buffer(path).copy(apdu, 6, 0, path.length);
+  Buffer.from(path).copy(apdu, 6, 0, path.length);
 
   return [apdu];
 };

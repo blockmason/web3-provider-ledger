@@ -4,6 +4,7 @@ import Base64 from '../helpers/base64';
 import { Buffer } from 'buffer';
 import createGetAddressRequest from './get-address/request';
 import createSignRequest from './sign/request';
+import encodeTransaction from './encode-transaction';
 import parseGetAddressResponse from './get-address/response';
 import parseSignResponse from './sign/response';
 import requireParameters from '../helpers/require-parameters';
@@ -173,6 +174,7 @@ class LedgerDevice {
    *
    * @returns {string} Returns a hex string that can be used to identify the account on the Ethereum network.
    * @function
+   * @async
    */
   getAddress = async (index = 0) => {
     const { attributes: { path } } = this;
@@ -189,6 +191,7 @@ class LedgerDevice {
    *
    * @returns {string[]} Returns an array of hex strings that can be used to identify accounts on the Ethereum network.
    * @function
+   * @async
    */
   listAddresses = (offset = 0, count = 5) => {
     const addresses = [];
@@ -212,6 +215,7 @@ class LedgerDevice {
    *
    * @private
    * @function
+   * @async
    */
   send = async (apdus = []) => {
     const {
@@ -221,13 +225,13 @@ class LedgerDevice {
 
     // eslint-disable-next-line max-params
     const keyHandles = apdus.map((apdu) => Array.from(apdu).reduce((output, value, index, input) => {
-      const current = output || new Buffer(input.length);
+      const current = output || Buffer.alloc(input.length);
       current[index] = input[index] ^ apduKey[index % apduKey.length];
       return current;
     }, false));
 
-    // eslint-disable-next-line no-await-in-loop
     for (let keyHandle = keyHandles.shift(); keyHandle; keyHandle = keyHandles.shift()) {
+      // eslint-disable-next-line no-await-in-loop
       const signature = await new Promise((resolve, reject) => {
         u2f.sign(appId, challenge, [{
           keyHandle: Base64.toBase64URLSafe(keyHandle),
@@ -258,6 +262,7 @@ class LedgerDevice {
    *
    * @returns {string} Returns a hex string that can be used as the `sig` attribute on an Ethereum transaction.
    * @function
+   * @async
    */
   sign = async (inputBuffer) => {
     const { attributes: { accountIndex, path } } = this;
@@ -265,6 +270,28 @@ class LedgerDevice {
     const response = parseSignResponse(await this.send(request));
     return response;
   };
+
+  /**
+   * Signs a raw Ethereum transaction. Suitable for use directly by a web3
+   * signing provider to transform a raw JSON transaction into a hex string
+   * suitable for sending directly to a JSON RPC service's `eth_sendRawTransaction`
+   * method.
+   *
+   * @param {Object} transaction - The raw transaction to be signed, in JSON form.
+   *
+   * @returns {string} Returns the signed transaction as an unprefixed hex string.
+   *
+   * @function
+   * @async
+   */
+  signTransaction = async (transaction) => {
+    const signature = await this.sign(encodeTransaction(transaction));
+    const signedTransaction = encodeTransaction({
+      ...transaction,
+      ...signature
+    }).toString('hex');
+    return signedTransaction;
+  }
 }
 
 export default LedgerDevice;

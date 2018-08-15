@@ -10,7 +10,7 @@ import LedgerProvider from '.';
 const origin = 'https://example.com';
 const u2f = {
   sign: stub().callsArgWith(3, {
-    signatureData: new Buffer([
+    signatureData: Buffer.from([
       ...new Array(5).fill(0x1a),
       // Public Key
       [0x12, 0x34, 0x56, 0x78].length,

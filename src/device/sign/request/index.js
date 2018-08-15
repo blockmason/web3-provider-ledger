@@ -14,7 +14,7 @@ const createSignRequest = (path, inputBuffer) => {
     if (offset === 0) {
       const pathSize = 1 + path.length;
       const dataSize = Math.min(inputBuffer.length - offset, chunkSize - headerSize - pathSize);
-      const apdu = new Buffer(headerSize + pathSize + dataSize);
+      const apdu = Buffer.alloc(headerSize + pathSize + dataSize);
       // Command: signTransaction() (0xe004)
       apdu[0] = 0xe0;
       apdu[1] = 0x04;
@@ -28,7 +28,7 @@ const createSignRequest = (path, inputBuffer) => {
       // eslint-disable-next-line prefer-destructuring
       apdu[5] = path.length / 4;
       // Path Data
-      new Buffer(path).copy(apdu, headerSize + 1, 0, path.length);
+      Buffer.from(path).copy(apdu, headerSize + 1, 0, path.length);
       // Data
       inputBuffer.copy(apdu, headerSize + pathSize, offset, offset + dataSize);
 
@@ -37,7 +37,7 @@ const createSignRequest = (path, inputBuffer) => {
       offset += dataSize;
     } else {
       const dataSize = Math.min(inputBuffer.length - offset, chunkSize - headerSize);
-      const apdu = new Buffer(headerSize + dataSize);
+      const apdu = Buffer.alloc(headerSize + dataSize);
       // Command: signTransaction() (0xe004)
       apdu[0] = 0xe0;
       apdu[1] = 0x04;

@@ -9,7 +9,7 @@ import parseGetAddressResponse from '.';
 
 story('parseGetAddressResponse()', {
   given: () => [
-    new Buffer([
+    Buffer.from([
       ...new Array(5).fill(0x1a),
       // Public Key
       [0x12, 0x34, 0x56, 0x78].length,
