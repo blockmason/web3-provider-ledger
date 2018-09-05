@@ -24,13 +24,13 @@ describe('LedgerDevice', () => {
 
 story('LedgerDevice#sign()', {
   given: () => [
-    new Buffer([0xde, 0xad, 0xba, 0xad])
+    Buffer.from([0xde, 0xad, 0xba, 0xad])
   ],
   when: (inputBuffer) => new LedgerDevice({
     appId: 'https://example.com',
     u2f: {
       sign: stub().callsArgWith(3, {
-        signatureData: new Buffer([
+        signatureData: Buffer.from([
           // 5 bytes of filler
           ...new Array(5).fill(0),
           // "v" component
@@ -52,13 +52,41 @@ story('LedgerDevice#sign()', {
   })
 });
 
+story('LedgerDevice#signTransaction()', {
+  given: () => [
+    {
+      from: '0xfeedb0b0deadbeef'
+    }
+  ],
+  when: (transaction) => new LedgerDevice({
+    appId: '',
+    u2f: {
+      sign: stub().callsArgWith(3, {
+        signatureData: Buffer.from([
+          // 5 bytes of filler
+          ...new Array(5).fill(0),
+          // "v" component
+          0xfa,
+          // "r" component
+          ...new Array(32).fill(0xfa),
+          // "s" component
+          ...new Array(32).fill(0x1a),
+          // Status
+          ...[0x90, 0x00]
+        ]).toString('base64')
+      })
+    }
+  }).signTransaction(transaction),
+  then: async (signedTransaction) => expect(await signedTransaction).to.deep.equal('f84a80808080808081faa0fafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafafaa01a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a')
+});
+
 story('LedgerDevice#getAddress()', {
   given: () => [],
   when: () => new LedgerDevice({
     appId: 'https://example.com',
     u2f: {
       sign: stub().callsArgWith(3, {
-        signatureData: new Buffer([
+        signatureData: Buffer.from([
           ...new Array(5).fill(0),
           // Public Key
           [0x12, 0x34, 0x56, 0x78].length,

@@ -1,5 +1,3 @@
-import encodeTransaction from './encode-transaction';
-
 /**
  * An Ethereum JSON RPC 2.0 implementation that wraps a Ledger device.
  */
@@ -35,11 +33,8 @@ class LedgerEthereumRPC {
    */
   sendTransaction = async (transaction) => {
     const { attributes: { device } } = this;
-    const signature = await device.sign(encodeTransaction(transaction));
-    return encodeTransaction({
-      ...transaction,
-      ...signature
-    }).toString('hex');
+    const signedTransaction = await device.signTransaction(transaction);
+    return signedTransaction;
   };
 }
 
