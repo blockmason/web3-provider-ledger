@@ -45,12 +45,6 @@ jobs:
     - store_artifacts:
         path: reports/junit
     - run:
-        name: Generate documentation
-        command: |
-          yarn documentation
-    - store_artifacts:
-        path: docs
-    - run:
         name: Scanning dependencies for vulnerabilities
         command: |
           if [ -n "${SNYK_TOKEN}" ]; then
