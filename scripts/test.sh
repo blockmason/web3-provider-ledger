@@ -28,8 +28,8 @@ run_mocha() {
     NODE_ENV=test \
     "${MOCHA}" \
       $* \
-      --require babel-register \
-      --require babel-polyfill \
+      --require @babel/register \
+      --require @babel/polyfill \
       spec.setup.js \
       $(list_test_files)
   ) || exit 1
