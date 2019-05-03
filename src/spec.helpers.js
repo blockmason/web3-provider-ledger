@@ -1,12 +1,11 @@
-/* global context, describe, it */
+import { describe, it } from 'mocha';
+import { spy, stub } from 'sinon';
 
-import chai from 'chai';
-import sinon from 'sinon';
-
-const { expect } = chai;
-const { spy, stub } = sinon;
+import { expect } from 'chai';
 
 const story = (description, { given = [], when, then }) => it(description, () => then(when(...given())));
+
+const context = describe;
 
 export {
   context,
