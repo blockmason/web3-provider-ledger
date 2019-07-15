@@ -1,4 +1,4 @@
-/* global origin, u2f */
+/* global u2f */
 
 import LedgerDevice from './device';
 import RPC from './rpc';
